@@ -7,18 +7,37 @@ import PropTypes from 'prop-types'
 
 import Spiner from '../layout/Spiner'
 
-const MostarLibro = ({libro}) => {
+const MostarLibro = ({libro, firestore, history}) => {
     if (!libro) return <Spiner />
     console.log(libro);
     
     let btnPrestamo;
-
     if(libro.existencia - libro.prestados.length > 0) {
         btnPrestamo = <Link to={`/libros/prestamo/${libro.id}`}
                             className="btn btn-success my-3"
                         >Solicitar Prestamo</Link>
     } else {
         btnPrestamo = null;
+    }
+
+    const devolverLibro = id => {
+        console.log(id);
+
+        //copia del libro
+        const libroActualizado = {...libro}
+
+        // eliminar la persona que esta realizando la devolucion
+        const prestados = libro.prestados.filter(usuario => usuario.codigo !== id)
+
+        libroActualizado.prestados = prestados
+
+        firestore.update({
+            collection:'libros',
+            doc: libro.id
+        }, libroActualizado).then(() => {
+            history.push("/")
+        })
+
     }
 
     return (
@@ -100,7 +119,7 @@ const MostarLibro = ({libro}) => {
                             <button 
                                 type="button" 
                                 className="btn btn-success font-weight-bold"
-                                onClick={() => this.devolverLibro(prestado.codigo)}
+                                onClick={() => devolverLibro(prestado.codigo)}
                             >  Devolver Libro </button>
                         </div>
                     </div>

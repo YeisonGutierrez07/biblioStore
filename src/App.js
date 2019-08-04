@@ -29,7 +29,7 @@ function App() {
             {/* Rutas de libros */}
             <Route exact path='/' component={Libros} />
             <Route exact path='/libros/mostrar/:id' component={MostarLibro} />
-            <Route exact path='/libros/nuevos' component={NuevoLibro} />
+            <Route exact path='/libros/nuevo' component={NuevoLibro} />
             <Route exact path='/libros/editar/:id' component={EditarLibros} />
             <Route exact path='/libros/prestamo/:id' component={PrestamoLibro} />
 

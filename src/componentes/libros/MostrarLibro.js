@@ -67,7 +67,45 @@ const MostarLibro = ({libro}) => {
                     </span>
                     {libro.existencia - libro.prestados.length}
                 </p>
+                {/* Boton para solicitar un prestamo */}
                 {btnPrestamo}
+                {/* Muestra las personas que han solicitado los libros */}
+                <h3 className="my-2">Personas que tienen el libro prestado</h3>
+                {libro.prestados.map(prestado => (
+                    <div key={prestado.codigo} className="card my-03">
+                        <h4 className="card-header">
+                            {prestado.nombre} {prestado.apellido}
+                        </h4>
+                        <div className="card-body">
+                            <p>
+                                <span className="font-weight-bold">
+                                    Código: {' '}
+                                </span>
+                                {prestado.codigo}
+                            </p>
+                            <p>
+                                <span className="font-weight-bold">
+                                    Carrera: {' '}
+                                </span>
+                                {prestado.carrera}
+                            </p>
+                            <p>
+                                <span className="font-weight-bold">
+                                    Fecha de solicitud: {' '}
+                                </span>
+                                {prestado.fecha_solucitud}
+                            </p>
+                        </div>
+                        <div className="card-footer">
+                            <button 
+                                type="button" 
+                                className="btn btn-success font-weight-bold"
+                                onClick={() => this.devolverLibro(prestado.codigo)}
+                            >  Devolver Libro </button>
+                        </div>
+                    </div>
+                ))}
+
             </div>
         </div>
       );

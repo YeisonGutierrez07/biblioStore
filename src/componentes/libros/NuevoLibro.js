@@ -48,7 +48,7 @@ class NuevoLibro extends Component {
                         Volver al Listado
                     </Link>
                 </div>
-                <div className="row justify-content-center">
+                <div className="row">
                     <div className="col-md-8 mt-5">
                         <form onSubmit={this.agregarLibro}>
                             <div className="form-group">

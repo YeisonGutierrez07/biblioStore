@@ -56,7 +56,7 @@ class EditarLibros extends React.Component {
                         </i>
                     </h2>
                 </div> 
-                <div className="row justify-content-center">
+                <div className="row">
                     <div className="col-md-8 mt-5">
                     <form onSubmit={this.editarLibro}>
                             <div className="form-group">

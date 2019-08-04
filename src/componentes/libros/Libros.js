@@ -8,9 +8,19 @@ import PropTypes from 'prop-types'
 import Spiner from '../layout/Spiner'
 
 
-const Libros = ({libros}) => {
+const Libros = ({libros, firestore}) => {
 
     if (!libros) return <Spiner />
+
+    const elimiarLibro = id => {
+        console.log(firestore);
+        console.log(id);
+        firestore.delete({
+            collection: 'libros',
+            doc: id
+        })
+        .then(() => console.log("ELIMINA LIBRO"))
+    }
 
     return ( 
         <div className="row">
@@ -54,7 +64,7 @@ const Libros = ({libros}) => {
                                     <i className="fas fa-angle-double-right"></i>{' '}
                                     Más Información
                                 </Link>
-                                <button className="btn btn-danger btn-block">
+                                <button className="btn btn-danger btn-block" onClick={() => elimiarLibro(libro.id)}>
                                     <i className="fas fa-trash-alt"></i>{' '}
                                     Eliminar
                                 </button>

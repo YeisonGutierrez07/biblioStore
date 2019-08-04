@@ -4,6 +4,9 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import store from './store'
 import { Provider } from 'react-redux';
 
+// Login
+import AuthLogin from './componentes/auth/authLogin'
+
 /* Rutas de libros */
 import Libros from './componentes/libros/Libros'
 import EditarLibros from './componentes/libros/EditarLibros'
@@ -26,6 +29,9 @@ function App() {
         <Navbar/>
         <div className="container">
           <Switch>
+            {/* login */}
+            <Route exact path='/login' component={AuthLogin} />
+
             {/* Rutas de libros */}
             <Route exact path='/' component={Libros} />
             <Route exact path='/libros/mostrar/:id' component={MostarLibro} />

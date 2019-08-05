@@ -26,8 +26,6 @@ class EditarSuscriptor extends Component {
             codigo: this.codigoInput.current.value,
             carrera: this.carreraInput.current.value,
         }
-        console.log(SuscriptorActualizado);
-        
         // extraer firestore y history de props
         const {suscriptor, firestore, history} = this.props
         

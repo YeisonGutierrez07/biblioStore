@@ -25,8 +25,6 @@ class EditarLibros extends React.Component {
             existencia: this.refExistencia.current.value,
             prestados: libro.prestados
         }
-        console.log(editarLibro);
-
          // extraer firestore y history de props
          const {suscriptor, firestore, history} = this.props
         

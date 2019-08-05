@@ -9,8 +9,6 @@ import Spiner from '../layout/Spiner'
 
 const MostarLibro = ({libro, firestore, history}) => {
     if (!libro) return <Spiner />
-    console.log(libro);
-    
     let btnPrestamo;
     if(libro.existencia - libro.prestados.length > 0) {
         btnPrestamo = <Link to={`/libros/prestamo/${libro.id}`}
@@ -21,8 +19,6 @@ const MostarLibro = ({libro, firestore, history}) => {
     }
 
     const devolverLibro = id => {
-        console.log(id);
-
         //copia del libro
         const libroActualizado = {...libro}
 

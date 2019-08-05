@@ -8,12 +8,15 @@ import PropTypes from 'prop-types'
 import Spiner from '../layout/Spiner'
 import FichaSuscriptor from '../suscriptores/fichaSuscriptor';
 
+
+// REDUX actions
+import { buscarUsuario } from '../../actions/buscarUsuarioActions';
+
 class PrestamoLibro extends Component {
 
     state = {
         noResultados: false,
-        alumno: "",
-        estudiante: {}
+        alumno: ""
     }
 
     leerDato = e => {
@@ -28,29 +31,30 @@ class PrestamoLibro extends Component {
 
         // obtener valor del state
         const {alumno} = this.state
-        console.log(alumno);
 
         // extraer firestore
-        const {firestore} = this.props
-
+        const {firestore, buscarUsuario} = this.props
+        
         //hacer consulta
         const collection = firestore.collection("suscriptores");
         const consulta = collection.where("codigo", "==", alumno).get();
         consulta.then(InformacionDelUsuario => {
 
-            console.log("LERR: ", InformacionDelUsuario);
             if (InformacionDelUsuario.empty) {
                 // no hay resultados
+
+                //Almacenar en redux un objeto vacio
+                buscarUsuario({})
                 this.setState({
-                    estudiante: {},
                     noResultados: true
                 })
             } else {
                 //si hay resultados
                 const datos = InformacionDelUsuario.docs[0]
-                console.log(datos.data());
+
+                // Colocar el resultado en el state de redux
+                buscarUsuario(datos.data())
                 this.setState({
-                    estudiante: datos.data(),
                     noResultados: false
                 })
             }
@@ -58,17 +62,19 @@ class PrestamoLibro extends Component {
     }
 
     soliciatarPrestamo = () => {
-        const {estudiante} = this.state
-        const {libro} = this.props
+        const {estudiante, firestore, history, libro} = this.props
 
         //fecha de alta del libro
         estudiante.fecha_solucitud = new Date().toLocaleDateString();
 
-        const libroActualizado = libro
-        console.log(libroActualizado);
-        libroActualizado.prestados.push(estudiante)
 
-        const {firestore, history} = this.props
+        // No se puede mutar los props, tomar una copia y crear un arreglo nuevo.
+        let prestados = []
+        prestados = [...libro.prestados, estudiante]
+
+        //Copear el objeto y agregar los prestados
+        let libroActualizado = {...libro}
+        libroActualizado.prestados = prestados
         
         firestore.update({
             collection: 'libros',
@@ -82,7 +88,8 @@ class PrestamoLibro extends Component {
         const {libro} = this.props
         if (!libro) return <Spiner />
 
-        const {noResultados, estudiante} = this.state
+        const { estudiante} = this.props
+        const {noResultados} = this.state
 
         let fichaAlumno, btnSolicitar;
         if (estudiante.nombre) {
@@ -99,6 +106,14 @@ class PrestamoLibro extends Component {
             fichaAlumno = null
             btnSolicitar = null 
         }
+
+        //Mostrar mensaje de error
+        let mensajeResultado = '';
+        if (noResultados) {
+            mensajeResultado = <div className="alert alert-danger">No hay resultados</div>
+        } else {
+            mensajeResultado = null
+        }  
 
         return (
             <div className="row mt-5">
@@ -137,6 +152,9 @@ class PrestamoLibro extends Component {
                             {/* Muestra la ficha del alumno */}
                             {fichaAlumno}
                             {btnSolicitar}
+
+                            {/* muestra mensaje de error */}
+                            {mensajeResultado}
                         </div>
                     </div>
                 </div> 
@@ -156,8 +174,8 @@ export default compose(
             doc: props.match.params.id
         }
     ]),
-    connect(({firestore:{ordered}}, props) =>({
-        libro: ordered.libro && ordered.libro[0]
-    }))
-    
+    connect(({firestore:{ordered}, usuario}, props) =>({
+        libro: ordered.libro && ordered.libro[0],
+        estudiante: usuario
+    }), {buscarUsuario})
 )(PrestamoLibro);

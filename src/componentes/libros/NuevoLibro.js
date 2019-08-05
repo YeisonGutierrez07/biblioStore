@@ -24,11 +24,9 @@ class NuevoLibro extends Component {
 
         // extraer los valores del state
         const {libro} = this.state
-        console.log(libro);
 
         libro.prestados = []
         //extraer firestore de props
-        console.log(this.props.firestore);
         const {firestore, history} = this.props
         
         //Guardar en la vase de datos

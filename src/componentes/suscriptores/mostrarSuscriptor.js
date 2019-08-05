@@ -11,8 +11,6 @@ import Spiner from '../layout/Spiner'
 const MostarSuscriptor = ({suscriptor}) => {
 
     if (!suscriptor) return <Spiner />
-    console.log(suscriptor);
-    
     return (
         <div className="row">
             <br /><br /><br /><br />

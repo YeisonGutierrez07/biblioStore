@@ -14,8 +14,6 @@ class Navbar extends React.Component {
 
     //Recibe los props automaticamente
     static getDerivedStateFromProps(nextProps, prevState) {
-        console.log(nextProps)
-    
         const {auth} = nextProps
 
         if (auth.uid) {

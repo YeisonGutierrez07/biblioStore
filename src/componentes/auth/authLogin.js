@@ -32,7 +32,6 @@ class AuthLogin extends Component {
         })
         .catch(err => {
             console.log(err);
-            
         })
     }
 

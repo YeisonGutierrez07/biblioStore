@@ -29,11 +29,8 @@ class NuevoSuscriptor extends Component {
 
         // extraer los valores del state
         const {suscriptor} = this.state
-        console.log(suscriptor);
-        
 
         //extraer firestore de props
-        console.log(this.props.firestore);
         const {firestore, history} = this.props
 
         //Guardar en la vase de datos

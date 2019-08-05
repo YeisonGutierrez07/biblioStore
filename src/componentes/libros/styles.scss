@@ -4,14 +4,21 @@
 }
 
 .moveCard:hover {
-  padding:  20px;
   transition-property: all;
-  transition-duration: 0.2s;
+  transition-duration: 0.3s;
   transition-timing-function: ease-in;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   top:5px;
+  z-index: 1000;
+
+  -webkit-transform: scale(0);
+  transform: scale(1.1);
 }
 
 .imgLibro {
     height: 350px;
+}
+
+.colorTitle {
+  color: aliceblue !important
 }

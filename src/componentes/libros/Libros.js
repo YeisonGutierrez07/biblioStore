@@ -3,7 +3,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import { Link } from 'react-router-dom'
-import { Card } from 'antd';
+import { Card, Row, Col } from 'antd';
 import PropTypes from 'prop-types'
 import Spiner from '../layout/Spiner'
 import './styles.scss'
@@ -32,26 +32,27 @@ const Libros = ({libros, firestore}) => {
                 </Link>
             </div>
             <div className="col-md-12">
-                <h2>
+                <h2 className="colorTitle">
                     <i className="fas fa-book"></i>{' '}
                     Libros
                 </h2>
             </div>
-            {libros.map(libro => (
-                <div className="moveCard">
-                    <Link to={`/libros/mostrar/${libro.id}`} >
-                        <Card
-                        key={libro.id}
-                        hoverable
-                        style={{ width: 240 }}
-                        cover={<img alt="example" className="imgLibro" src={libro.imagen} />}
-                        >
-                        <Meta title={libro.titulo} description="www.instagram.com" />
-                        </Card>
-                    </Link>
-                    
-                </div>
-            ))}
+            <Row align="center">
+                {libros.map(libro => (
+                    <Col lg={4}   md={6}   sm={12} xs={24}  className="moveCard hvr-rectangle-in">
+                        <Link to={`/libros/mostrar/${libro.id}`} >
+                            <Card
+                            key={libro.id}
+                            
+                            style={{ width: 240 }}
+                            cover={<img alt="example" className="imgLibro" src={libro.imagen} />}
+                            >
+                            <Meta title={libro.titulo} description={libro.editorial} />
+                            </Card>
+                        </Link>
+                    </Col>
+                ))}
+            </Row>
         </div>
     );
 }

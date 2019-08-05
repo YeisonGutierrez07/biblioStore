@@ -13,8 +13,6 @@ const Libros = ({libros, firestore}) => {
     if (!libros) return <Spiner />
 
     const elimiarLibro = id => {
-        console.log(firestore);
-        console.log(id);
         firestore.delete({
             collection: 'libros',
             doc: id

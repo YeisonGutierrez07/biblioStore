@@ -1,0 +1,17 @@
+.moveCard {
+    align-content: center;
+    padding: 2px 16px;
+}
+
+.moveCard:hover {
+  padding:  20px;
+  transition-property: all;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  top:5px;
+}
+
+.imgLibro {
+    height: 350px;
+}

@@ -5,8 +5,6 @@ import {connect} from 'react-redux'
 import {firebaseConnect} from 'react-redux-firebase'
 import PropTypes from 'prop-types';
 
-
-
 class Navbar extends React.Component {
     state = { 
         usuarioAutenticado: false
@@ -25,61 +23,57 @@ class Navbar extends React.Component {
     
     cerrarSesion = () => {
         const { firebase } = this.props
-
         firebase.logout();
     }
 
-    render() { 
+    returnMenu = () => {
         const { usuarioAutenticado } =this.state
         const { auth } =this.props
-        return ( 
-            <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+        if (usuarioAutenticado) {
+            return(
+             <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
                 <nav className="navbar navbar-light">
                     <span className="navbar-brand mb-0 h1">
-                        Administrador de biblioteca Creado por yeison
+                        Administrador de biblioteca
                     </span>
                 </nav>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-            
-                {usuarioAutenticado ? (
-                    <div className="collapse navbar-collapse" id="navbarColor01">
-                        <ul className="navbar-nav mr-auto">
-                            <li className="nav-item">
-                                <Link to={'./suscriptores'} className="nav-link">
-                                    Suscriptores
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link to={'./'} className="nav-link">
-                                    Libros
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link to={'./suscriptores'} className="nav-link">
-                                    Suscriptores
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
-                ) : null}
-                {usuarioAutenticado ?(
-                    <ul className="navbar-nav ml-auto">
+                <div className="collapse navbar-collapse" id="navbarColor01">
+                    <ul className="navbar-nav mr-auto">
                         <li className="nav-item">
-                            <a href="#!" className="nav-link">
-                                {auth.email}
-                            </a>
+                            <Link to={'./suscriptores'} className="nav-link">
+                                Suscriptores
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <button className="btn btn-danger" type="button" onClick={this.cerrarSesion}>
-                                Cerrar Sesión
-                            </button>
+                            <Link to={'./'} className="nav-link">
+                                Libros
+                            </Link>
                         </li>
                     </ul>
-                ): null}
+                </div>
+                <ul className="navbar-nav ml-auto">
+                    <li className="nav-item">
+                        <a href="#!" className="nav-link">
+                            {auth.email}
+                        </a>
+                    </li>
+                    <li className="nav-item">
+                        <button className="btn btn-danger" type="button" onClick={this.cerrarSesion}>
+                            Cerrar Sesión
+                        </button>
+                    </li>
+                </ul>
             </nav>
-         );
+            )
+        }
+        return null
+    }
+
+    render() { 
+        return this.returnMenu();
     }
 }
 

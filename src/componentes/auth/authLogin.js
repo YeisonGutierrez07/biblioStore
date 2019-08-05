@@ -1,81 +1,101 @@
 import React, { Component } from 'react';
 import {firebaseConnect} from 'react-redux-firebase'
-import { Input, Button } from 'antd';
+import { Row, Col, Input, Button,  Form, Icon, Alert } from 'antd';
 import PropTypes from 'prop-types';
+import './styles.scss'
 
 
 class AuthLogin extends Component {
     
     state = {
-        email: "",
-        password: ""
+        alertNoLogin: false
     }
 
-    // Almacenarlos datos del login en state
-    leerDatos= e => {
-        this.setState({
-            [e.target.name]: e.target.value 
-        })
-    }
-
-    //iniciarSesion 
-    iniciarSesion = e => { 
-        e.preventDefault()
-        const {email, password}= this.state
+    iniciarSesion = e => {
+        e.preventDefault();
         const {firebase} = this.props
 
-        firebase.login({
-            email,
-            password
+        this.props.form.validateFields((err, values) => {
+          if (!err) {
+            firebase.login({
+                email: values.email,
+                password: values.password
+            })
+            .then(resultado => {
+                console.log("OK ", resultado);
+            })
+            .catch(err => {
+                this.setState({
+                    alertNoLogin: true
+                })
+            })
+          }
+        });
+      };
+    
+      resetModal = () => {
+        this.setState({
+            alertNoLogin: false
         })
-        .then(resultado => {
-            console.log("OK ", resultado);
-        })
-        .catch(err => {
-            console.log(err);
-        })
-    }
+      }
 
     render() {
+        const { getFieldDecorator } = this.props.form;
+
+        const alertaNoLogin = () => {
+            const {alertNoLogin} = this.state
+            if (alertNoLogin) {
+                return  <Alert message="Correo o contraseña incorrecto" type="warning" />
+            }
+            return null
+        }
         return ( 
-            <div className="row">
-                <div className="col-md-5">
-                    <div className="card mt-5">
-                        <div className="card-body">
-                            <h2 className="text-center py-4">
-                                <i className="fas fa-lock"></i>{' '}
-                                Iniciar sesión
-                            </h2>
-                            <form onSubmit={this.iniciarSesion}>
-                                <div className="form-group">
-                                    <label>Email: </label>
-                                    <Input 
-                                        type="email" 
-                                        className="form-control"
-                                        name="email"
-                                        required
-                                        value={this.state.email}
-                                        onChange={this.leerDatos}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>Contraseña: </label>
-                                    <Input 
-                                        type="password" 
-                                        className="form-control"
-                                        name="password"
-                                        required
-                                        value={this.state.password}
-                                        onChange={this.leerDatos}
-                                    />
-                                </div>
-                                {/* <input type="submit" value="" className="btn btn-success btn-block"/> */}
-                                <Button type="submit">Iniciar Sesión</Button>
-                            </form>
+            <Row justify="center">
+                <Col xl={8} lg={8} md={6}/>
+                <Col xl={8} lg={8} md={12} sm={24} xs={24}>
+                    <div className="cardForm" align="center">
+                        <div>
+                            <img className="imgLogin" src="https://image.flaticon.com/icons/png/512/224/224620.png" alt=""/>
                         </div>
+                        <h3 className="title">
+                            BiblioStore
+                        </h3>
+                        <Form onSubmit={this.iniciarSesion} className="login-form">
+                            <Form.Item>
+                            {getFieldDecorator('email', {
+                                rules: [{ required: true, message: 'Por favor ingrese su Correo!' }],
+                            })(
+                                <Input
+                                type="email"
+                                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                placeholder="Correo"
+                                onChange={this.resetModal}
+                                />,
+                            )}
+                            </Form.Item>
+                            <Form.Item>
+                            {getFieldDecorator('password', {
+                                rules: [{ required: true, message: 'Por favor ingrese su contraseña!' }],
+                            })(
+                                <Input
+                                prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                type="password"
+                                placeholder="Password"
+                                onChange={this.resetModal}
+                                />,
+                            )}
+                            </Form.Item>
+                            <Form.Item>
+                                <Button type="primary" htmlType="submit" className="login-form-button">
+                                    Iniciar Sesión
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                        {alertaNoLogin()}
                     </div>
-                </div>
-            </div>
+                </Col>
+                <Col xl={8} lg={8} md={6}/>
+            </Row>
         );
     }
 }
@@ -84,4 +104,7 @@ AuthLogin.propTypes = {
     firebase: PropTypes.object.isRequired
 }
 
-export default firebaseConnect()(AuthLogin);
+const LoginForm = Form.create({ name: 'normal_login' })(AuthLogin);
+
+
+export default firebaseConnect()(LoginForm);

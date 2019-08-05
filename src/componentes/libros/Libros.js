@@ -3,9 +3,11 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
 import { Link } from 'react-router-dom'
+import { Card } from 'antd';
 import PropTypes from 'prop-types'
-
 import Spiner from '../layout/Spiner'
+import './styles.scss'
+const { Meta } = Card;
 
 
 const Libros = ({libros, firestore}) => {
@@ -29,48 +31,27 @@ const Libros = ({libros, firestore}) => {
                     Nuevo Libro
                 </Link>
             </div>
-            <div className="col-md-8">
+            <div className="col-md-12">
                 <h2>
                     <i className="fas fa-book"></i>{' '}
                     Libros
                 </h2>
             </div>
-            <table className="table table-striped mt-4">
-                <thead className="text-light bg-primary">
-                    <tr>
-                        <th>Titulo</th>
-                        <th>ISBN</th>
-                        <th>Editorial</th>
-                        <th>Existencia</th>
-                        <th>Disponibles</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {libros.map(libro => (
-                        <tr key={libro.id}>
-                            <td>{libro.titulo}</td>
-                            <td>{libro.ISBN}</td>
-                            <td>{libro.editorial}</td>
-                            <td>{libro.existencia}</td>
-                            <td>{libro.existencia - libro.prestados.length}</td>
-                            <td>
-                                <Link
-                                    to={`/libros/mostrar/${libro.id}`}
-                                    className="btn btn-success btn-block"
-                                >
-                                    <i className="fas fa-angle-double-right"></i>{' '}
-                                    Más Información
-                                </Link>
-                                <button className="btn btn-danger btn-block" onClick={() => elimiarLibro(libro.id)}>
-                                    <i className="fas fa-trash-alt"></i>{' '}
-                                    Eliminar
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            {libros.map(libro => (
+                <div className="moveCard">
+                    <Link to={`/libros/mostrar/${libro.id}`} >
+                        <Card
+                        key={libro.id}
+                        hoverable
+                        style={{ width: 240 }}
+                        cover={<img alt="example" className="imgLibro" src={libro.imagen} />}
+                        >
+                        <Meta title={libro.titulo} description="www.instagram.com" />
+                        </Card>
+                    </Link>
+                    
+                </div>
+            ))}
         </div>
     );
 }

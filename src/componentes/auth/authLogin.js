@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {firebaseConnect} from 'react-redux-firebase'
+import { Input, Button } from 'antd';
 import PropTypes from 'prop-types';
 
 
@@ -48,7 +49,7 @@ class AuthLogin extends Component {
                             <form onSubmit={this.iniciarSesion}>
                                 <div className="form-group">
                                     <label>Email: </label>
-                                    <input 
+                                    <Input 
                                         type="email" 
                                         className="form-control"
                                         name="email"
@@ -59,7 +60,7 @@ class AuthLogin extends Component {
                                 </div>
                                 <div className="form-group">
                                     <label>Contraseña: </label>
-                                    <input 
+                                    <Input 
                                         type="password" 
                                         className="form-control"
                                         name="password"
@@ -68,7 +69,8 @@ class AuthLogin extends Component {
                                         onChange={this.leerDatos}
                                     />
                                 </div>
-                                <input type="submit" value="Iniciar Sesión" className="btn btn-success btn-block"/>
+                                {/* <input type="submit" value="" className="btn btn-success btn-block"/> */}
+                                <Button type="submit">Iniciar Sesión</Button>
                             </form>
                         </div>
                     </div>

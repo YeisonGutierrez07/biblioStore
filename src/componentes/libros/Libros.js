@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -39,7 +40,7 @@ const Libros = ({libros, firestore}) => {
             </div>
             <Row align="center">
                 {libros.map(libro => (
-                    <Col lg={4}   md={6}   sm={12} xs={24}  className="moveCard hvr-rectangle-in">
+                    <Col lg={4} md={8} sm={12} xs={24}  className="moveCard hvr-rectangle-in">
                         <Link to={`/libros/mostrar/${libro.id}`} >
                             <Card
                             key={libro.id}
